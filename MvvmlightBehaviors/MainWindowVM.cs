@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System;
 using System.ComponentModel;
 using System.Windows;
 
@@ -23,14 +24,19 @@ namespace MvvmlightBehaviors
 
 
 
-        private RelayCommand<Person> _showItemCmd;
-        public RelayCommand<Person> ShowItemCmd => _showItemCmd ?? (_showItemCmd = new RelayCommand<Person>(
-            (p) => MessageBox.Show(p.FirstName),
-            (p) => p!= null,
+        private RelayCommand<object> _showItemCmd;
+        public RelayCommand<object> ShowItemCmd => _showItemCmd ?? (_showItemCmd = new RelayCommand<object>(
+            (o) => showPerson(o),
+            (o) => o!= null,
              keepTargetAlive: true
             ));
-		
-    private void loadData()
+
+        private void showPerson(object o)
+        {
+            MessageBox.Show((o as Person)?.FirstName);
+        }
+
+        private void loadData()
     {
             Persons.Add(new Person() { FirstName = "NameA" });
             Persons.Add(new Person() { FirstName = "NameB" });
